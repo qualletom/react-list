@@ -1,6 +1,9 @@
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import React from 'react';
 import {AddItemForm} from "./components/AddItemForm/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan/EditableSpan";
+import Delete from "@mui/icons-material/Delete";
 
 export type TaskType = {
   id: string;
@@ -68,7 +71,9 @@ export const Todolist = ({
           <li key={task.id} className={task.isDone ? "is-done" : ""}>
             <input type="checkbox" checked={task.isDone} onChange={() => changeTaskStatus(task.id, todolistId)}/>
             <EditableSpan title={task.title} onSave={handleUpdateTaskTitle(task.id)}/>
-            <button onClick={handleRemoveTask(task.id)}>X</button>
+            <IconButton aria-label="delete" size="small" onClick={handleRemoveTask(task.id)}>
+              <Delete fontSize="small"/>
+            </IconButton>
           </li>)
       })
       : "All is done!"
@@ -94,7 +99,9 @@ export const Todolist = ({
     <div>
       <div style={{display: "flex", alignItems: "center"}}>
         <h3><EditableSpan title={title} onSave={handleChangeTodolistTitle}/></h3>
-        <button onClick={() => removeTodolist(todolistId)}>X</button>
+        <IconButton aria-label="delete" size="small" onClick={() => removeTodolist(todolistId)}>
+          <Delete fontSize="small"/>
+        </IconButton>
       </div>
       <div>
         <AddItemForm addItem={handleAddNewTask}/>
@@ -103,15 +110,15 @@ export const Todolist = ({
         {renderTasks()}
       </ul>
       <div>
-        <button className={filter === FilterValues.ALL ? 'active-button' : ''}
+        <Button variant={filter === FilterValues.ALL ? 'contained' : 'text'}
                 onClick={handleChangeFilter(FilterValues.ALL)}>All
-        </button>
-        <button className={filter === FilterValues.ACTIVE ? 'active-button' : ''}
+        </Button>
+        <Button color="primary" variant={filter === FilterValues.ACTIVE ? 'contained' : 'text'}
                 onClick={handleChangeFilter(FilterValues.ACTIVE)}>Active
-        </button>
-        <button className={filter === FilterValues.COMPLETED ? 'active-button' : ''}
+        </Button>
+        <Button color="secondary" variant={filter === FilterValues.COMPLETED ? 'contained' : 'text'}
                 onClick={handleChangeFilter(FilterValues.COMPLETED)}>Completed
-        </button>
+        </Button>
       </div>
     </div>
   );
