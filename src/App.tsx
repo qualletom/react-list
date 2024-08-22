@@ -12,7 +12,7 @@ export type TodolistType = {
 
 export type TodolistStateType = TodolistType[];
 
-type TasksStateType = {
+export type TasksStateType = {
   [todolistId: string]: TaskType[];
 }
 
@@ -84,7 +84,7 @@ function App() {
     }))
   }
 
-  const updateTaskTitle = (title: string, taskId: string, todolistId: string) => {
+  const changeTaskTitle = (title: string, taskId: string, todolistId: string) => {
     setTasks(prev => ({
       ...prev,
       [todolistId]: prev[todolistId].map(t => t.id === taskId ? {...t, title} : t)
@@ -139,7 +139,7 @@ function App() {
           changeTaskStatus={changeTaskStatus}
           changeFilter={changeTodolistFilter}
           removeTodolist={removeTodolist}
-          updateTaskTitle={updateTaskTitle}
+          updateTaskTitle={changeTaskTitle}
           changeTodolistTitle={changeTodolistTitle}
         />)}
     </div>

@@ -1,15 +1,15 @@
-type StateType = {
-  age: number;
-  childrenCount: number;
-  name: string;
+export type UserStateType = {
+  age: number,
+  childrenCount: number,
+  name: string
 }
 
-type ActionType = {
-  type: string;
-  [key: string]: any;
+type userReducerActionType = {
+  type: string,
+  [key: string]: any
 }
 
-export const userReducer = (state: StateType, action: ActionType): StateType => {
+export const userReducer = (state: UserStateType, action: userReducerActionType) => {
   switch (action.type) {
     case 'INCREMENT_AGE': {
       return {
@@ -20,7 +20,7 @@ export const userReducer = (state: StateType, action: ActionType): StateType => 
     case 'INCREMENT_CHILDREN_COUNT': {
       return {
         ...state,
-        childrenCount: state.childrenCount + 1,
+        childrenCount: state.childrenCount + 1
       }
     }
     case 'CHANGE_NAME': {
@@ -29,8 +29,7 @@ export const userReducer = (state: StateType, action: ActionType): StateType => 
         name: action.newName
       }
     }
-    default: {
-      throw new Error('Unresolved action type');
-    }
+    default:
+      throw new Error("Unkonwn action type")
   }
 }

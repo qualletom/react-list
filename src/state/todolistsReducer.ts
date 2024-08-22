@@ -4,21 +4,30 @@ import {FilterValues} from "../Todolist";
 
 export type RemoveTodoListActionType = {
   type: 'REMOVE_TODOLIST_BY_ID',
-  id: string
+  payload: {
+    id: string
+  }
 }
 export type AddTodolistActionType = {
   type: 'ADD_TODOLIST',
-  title: string
+  payload: {
+    id: string,
+    title: string
+  }
 }
 export type ChangeTodolistTitleActionType = {
   type: 'CHANGE_TODOLIST_TITLE',
-  title: string
-  id: string
+  payload: {
+    title: string
+    id: string
+  }
 }
 export type ChangeTodolistFilterActionType = {
   type: 'CHANGE_TODOLIST_FILTER',
-  id: string
-  filter: FilterValues
+  payload: {
+    id: string
+    filter: FilterValues
+  }
 }
 
 type ActionType = RemoveTodoListActionType
@@ -29,31 +38,42 @@ type ActionType = RemoveTodoListActionType
 export const todolistsReducer = (state: TodolistStateType, action: ActionType): TodolistStateType => {
   switch (action.type) {
     case 'REMOVE_TODOLIST_BY_ID': {
+      const {id} = action.payload;
+
       //TODO: Delete tasks for this todolist
-      return state.filter(s => s.id !== action.id);
+      return state.filter(tl => tl.id !== id);
     }
     case 'ADD_TODOLIST': {
+      const {id, title} = action.payload;
       //TODO: Add empty tasks array
       return [
         ...state,
         {
-          id: v4(),
-          title: action.title,
+          id,
+          title,
           filter: FilterValues.ALL
         }
       ]
     }
     case 'CHANGE_TODOLIST_TITLE': {
-      return state.map(s => s.id === action.id ? {
-        ...s,
-        title: action.title
-      } : s)
+      const {id, title} = action.payload;
+
+      return state.map(tl => tl.id === id
+        ? {
+          ...tl,
+          title,
+        }
+        : tl)
     }
     case 'CHANGE_TODOLIST_FILTER': {
-      return state.map(s => s.id === action.id ? {
-        ...s,
-        filter: action.filter
-      } : s)
+      const {id, filter} = action.payload;
+
+      return state.map(tl => tl.id === id
+        ? {
+          ...tl,
+          filter,
+        }
+        : tl)
     }
     default: {
       throw new Error('Unresolved action type');
@@ -62,25 +82,40 @@ export const todolistsReducer = (state: TodolistStateType, action: ActionType): 
 }
 
 export const removeTodolistAC = (todolistId: string): RemoveTodoListActionType => {
-  return {type: "REMOVE_TODOLIST_BY_ID", id: todolistId}
+  return {
+    type: "REMOVE_TODOLIST_BY_ID",
+    payload: {
+      id: todolistId
+    }
+  }
 }
 
 export const addTodolistAC = (title: string): AddTodolistActionType => {
-  return {type: "ADD_TODOLIST", title}
+  return {
+    type: "ADD_TODOLIST",
+    payload: {
+      id: v4(),
+      title
+    }
+  }
 }
 
 export const changeTodolistTitleAC = (id: string, title: string): ChangeTodolistTitleActionType => {
   return {
     type: "CHANGE_TODOLIST_TITLE",
-    id,
-    title
+    payload: {
+      id,
+      title
+    }
   }
 }
 
 export const changeTodolistFilterAC = (id: string, filter: FilterValues): ChangeTodolistFilterActionType => {
   return {
     type: "CHANGE_TODOLIST_FILTER",
-    id,
-    filter
+    payload: {
+      id,
+      filter
+    }
   }
 }

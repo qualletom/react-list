@@ -1,6 +1,6 @@
-import {userReducer} from "./userReducer";
+import {userReducer, UserStateType} from "./userReducer";
 
-let state: any;
+let state: UserStateType;
 
 beforeEach(() => {
   state = {
