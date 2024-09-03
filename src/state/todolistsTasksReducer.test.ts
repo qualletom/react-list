@@ -1,8 +1,7 @@
-import {TasksStateType, TodolistStateType} from "../App";
 import {v4} from "uuid";
 import {FilterValues} from "../Todolist";
-import {addTodolistAC, todolistsReducer} from "./todolistsReducer";
-import {tasksReducer} from "./tasksReducer";
+import {addTodolistAC, todolistsReducer, TodolistStateType} from "./todolistsReducer";
+import {tasksReducer, TasksStateType} from "./tasksReducer";
 
 let tasksState: TasksStateType;
 let todolistsState: TodolistStateType;

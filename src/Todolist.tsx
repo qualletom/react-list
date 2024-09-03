@@ -4,6 +4,9 @@ import React from 'react';
 import {AddItemForm} from "./components/AddItemForm/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan/EditableSpan";
 import Delete from "@mui/icons-material/Delete";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasksReducer";
 
 export type TaskType = {
   id: string;
@@ -14,14 +17,9 @@ export type TaskType = {
 type TodolistType = {
   todolistId: string;
   title: string;
-  tasks: TaskType[];
   filter: FilterValues;
-  removeTask: (id: string, todolistId: string) => void;
-  addTask: (name: string, todolistId: string) => void;
-  changeTaskStatus: (id: string, todolistId: string) => void;
   changeFilter: (filterValue: FilterValues, todolistId: string) => void;
   removeTodolist: (todolistId: string) => void;
-  updateTaskTitle: (title: string, taskId: string, todolistId: string) => void;
   changeTodolistTitle: (title: string, todolistId: string) => void;
 }
 
@@ -34,16 +32,14 @@ export enum FilterValues {
 export const Todolist = ({
                            todolistId,
                            title,
-                           tasks,
                            filter,
-                           removeTask,
-                           addTask,
-                           changeTaskStatus,
                            changeFilter,
                            removeTodolist,
-                           updateTaskTitle,
                            changeTodolistTitle
                          }: TodolistType) => {
+  const dispatch = useDispatch();
+  const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todolistId]);
+
   const filterTasks = () => {
     switch (filter) {
       case FilterValues.ACTIVE: {
@@ -58,8 +54,11 @@ export const Todolist = ({
     }
   }
 
+  const changeTaskStatus = (id: string, todolistId: string) =>
+    dispatch(changeTaskStatusAC(id, todolistId));
+
   const handleUpdateTaskTitle = (taskId: string) => (title: string) => {
-    updateTaskTitle(title, taskId, todolistId);
+    dispatch(changeTaskTitleAC(title, taskId, todolistId));
   }
 
   const renderTasks = () => {
@@ -80,15 +79,15 @@ export const Todolist = ({
   }
 
   const handleRemoveTask = (id: string) => () => {
-    removeTask(id, todolistId);
+    dispatch(removeTaskAC(id, todolistId));
+  }
+
+  const handleAddNewTask = (title: string) => {
+    dispatch(addTaskAC(title, todolistId));
   }
 
   const handleChangeFilter = (newFilterValue: FilterValues) => () => {
     changeFilter(newFilterValue, todolistId);
-  }
-
-  const handleAddNewTask = (title: string) => {
-    addTask(title, todolistId);
   }
 
   const handleChangeTodolistTitle = (title: string) => {

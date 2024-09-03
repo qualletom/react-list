@@ -1,11 +1,10 @@
-import {TodolistStateType} from "../App";
 import {v4} from "uuid";
 import {FilterValues} from "../Todolist";
 import {
   addTodolistAC, changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
-  todolistsReducer
+  todolistsReducer, TodolistStateType
 } from "./todolistsReducer";
 
 let state: TodolistStateType;
