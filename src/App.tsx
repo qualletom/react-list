@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {FilterValues, Todolist} from "./Todolist";
 import {AddItemForm} from "./components/AddItemForm/AddItemForm";
@@ -16,19 +16,18 @@ function App() {
   const dispatch = useDispatch();
   const todolists = useSelector<AppRootState, TodolistStateType>(state => state.todolists);
 
-  const changeTodolistFilter = (filterValue: FilterValues, todolistId: string) =>
-    dispatch(changeTodolistFilterAC(todolistId, filterValue));
-
-  const removeTodolist = (todolistId: string) => {
-    dispatch(removeTodolistAC(todolistId));
-  }
-
-  const addNewTodolist = (title: string) => {
+  const addNewTodolist = useCallback((title: string) => {
     dispatch(addTodolistAC(title));
-  }
+  }, [dispatch])
 
-  const changeTodolistTitle = (title: string, todolistId: string) =>
-    dispatch(changeTodolistTitleAC(todolistId, title));
+  const removeTodolist = useCallback((todolistId: string) =>
+    dispatch(removeTodolistAC(todolistId)), [dispatch]);
+
+  const changeTodolistTitle = useCallback((title: string, todolistId: string) =>
+    dispatch(changeTodolistTitleAC(todolistId, title)), [dispatch]);
+
+  const changeTodolistFilter = useCallback((filterValue: FilterValues, todolistId: string) =>
+    dispatch(changeTodolistFilterAC(todolistId, filterValue)), [dispatch]);
 
   return (
     <div className="App">
